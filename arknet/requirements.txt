@@ -1,0 +1,3 @@
+aiohttp>=3.9
+zeroconf>=0.130
+aiohttp-cors>=0.7

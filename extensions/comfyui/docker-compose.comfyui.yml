@@ -1,0 +1,28 @@
+# ComfyUI — Optional GPU image generation extension
+# Deploy with: docker compose -f docker/docker-compose.yml -f extensions/comfyui/docker-compose.comfyui.yml up -d
+services:
+  comfyui:
+    image: comfyui:latest
+    container_name: ark-comfyui
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8188:8188"
+    volumes:
+      - /opt/ark/data/comfyui/models:/data
+      - /opt/ark/data/comfyui/output:/app/ComfyUI/output
+      - /opt/ark/data/comfyui/custom_nodes:/app/ComfyUI/custom_nodes
+      - /opt/ark/data/comfyui/user:/app/ComfyUI/user
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+networks:
+  default:
+    name: ark-net
